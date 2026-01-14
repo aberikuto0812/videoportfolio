@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>動画編集ポートフォリオ｜りくえー</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --bg:#f6fff9;
+  --text:#2f3f37;
+  --card:#ffffff;
+  --accent:#7bdc9a;
+  --shadow:rgba(0,0,0,.08);
+  --radius:20px;
+}
+body.dark{
+  --bg:#0f1c16;
+  --text:#e6fff4;
+  --card:#162820;
+  --shadow:rgba(0,0,0,.6);
+}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:"Zen Maru Gothic","Yu Gothic",sans-serif;
+  line-height:1.9;
+  transition:.3s;
+}
+
+/* =====================
+   ヘッダー
+===================== */
+header{
+  background:linear-gradient(135deg,#7bdc9a,#b6f2cf);
+  color:#fff;
+  text-align:center;
+  padding:90px 20px 100px;
+  border-radius:0 0 40px 40px;
+  position:relative;
+}
+
+/* ナビ */
+.top-nav{
+  position:absolute;
+  top:24px;
+  left:24px;
+  display:flex;
+  gap:16px;
+}
+.top-nav a{
+  color:#fff;
+  text-decoration:none;
+  font-weight:bold;
+  font-size:.9rem;
+  padding:6px 14px;
+  border-radius:999px;
+  background:rgba(255,255,255,.25);
+  transition:.3s;
+}
+.top-nav a:hover{
+  background:rgba(255,255,255,.45);
+}
+
+/* トグル */
+.toggle{
+  position:absolute;
+  top:20px;
+  right:20px;
+  border:none;
+  background:rgba(255,255,255,.25);
+  color:#fff;
+  padding:10px 14px;
+  border-radius:999px;
+  cursor:pointer;
+  font-size:1rem;
+}
+.toggle.client{ right:90px; }
+
+section{
+  max-width:1000px;
+  margin:auto;
+  padding:70px 20px;
+}
+
+h1{ font-size:2.6rem; }
+h2{
+  border-left:6px solid var(--accent);
+  padding-left:12px;
+  margin-bottom:24px;
+}
+h2::before{ content:"🫛 "; }
+body.client-mode h2::before{ content:""; }
+
+/* =====================
+   テキスト切替
+===================== */
+.text-client{ display:none; }
+body.client-mode .text-normal{ display:none; }
+body.client-mode .text-client{ display:block; }
+
+/* =====================
+   制作実績カード
+===================== */
+.video{
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:32px;
+  margin-bottom:44px;
+  box-shadow:0 10px 24px var(--shadow);
+}
+.video.highlight{
+  outline:3px solid var(--accent);
+}
+
+.video-embed{
+  position:relative;
+  width:100%;
+  padding-top:56.25%;
+  border-radius:14px;
+  overflow:hidden;
+  margin:22px 0;
+}
+.video-embed iframe{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  border:none;
+}
+
+/* =====================
+   サムネイル実績
+===================== */
+.thumb-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
+  margin-top:24px;
+}
+.thumb-grid img{
+  width:100%;
+  border-radius:14px;
+  box-shadow:0 6px 16px var(--shadow);
+  transition:.3s;
+}
+.thumb-grid img:hover{
+  transform:translateY(-4px);
+}
+
+/* =====================
+   フォーム
+===================== */
+form{
+  background:var(--card);
+  padding:32px;
+  border-radius:var(--radius);
+  box-shadow:0 10px 24px var(--shadow);
+}
+label{ font-weight:bold; }
+input,textarea{
+  width:100%;
+  padding:10px;
+  margin-bottom:20px;
+  border-radius:10px;
+  border:1px solid #ccc;
+  font-family:inherit;
+}
+button.submit{
+  background:var(--accent);
+  border:none;
+  padding:12px 26px;
+  border-radius:999px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+/* =====================
+   ずんだもん
+===================== */
+.zundamon{
+  position:fixed;
+  right:24px;
+  bottom:20px;
+  width:140px;
+  cursor:pointer;
+  z-index:999;
+  animation:float 3s ease-in-out infinite;
+}
+.zundamon img{ width:100%; }
+
+.zunda-bubble{
+  position:absolute;
+  bottom:100%;
+  left:50%;
+  transform:translateX(-50%);
+  margin-bottom:12px;
+  background:var(--card);
+  color:var(--text);
+  padding:10px 16px;
+  border-radius:16px;
+  font-size:.85rem;
+  white-space:nowrap;
+  border:2px solid var(--accent);
+  box-shadow:0 6px 16px var(--shadow);
+  opacity:0;
+  transition:.3s;
+}
+.zunda-bubble::after{
+  content:"";
+  position:absolute;
+  top:100%;
+  left:50%;
+  transform:translateX(-50%);
+  border:6px solid transparent;
+  border-top-color:var(--accent);
+}
+
+@keyframes float{
+  50%{ transform:translateY(-8px); }
+}
+
+/* =====================
+   スマホ
+===================== */
+@media(max-width:768px){
+  .zundamon{
+    width:90px;
+    animation:none;
+  }
+  .zunda-bubble{
+    font-size:.75rem;
+    padding:8px 12px;
+    opacity:1;
+  }
+  .top-nav{
+    top:auto;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
+  }
+}
+
+/* =====================
+   動画 切り替え
+===================== */
+.video-client{ display:none; }
+
+body.client-mode .video-normal{ display:none; }
+body.client-mode .video-client{ display:block; }
+
+.video-embed video{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header id="top">
+  <nav class="top-nav">
+    <a href="#top-video">トップ</a>
+    <a href="#works">制作実績</a>
+    <a href="#contact">お問い合わせ</a>
+  </nav>
+
+  <button class="toggle client" id="clientToggle" title="表示モード切替" onclick="toggleClientMode()">🫛</button>
+  <button class="toggle" id="themeToggle" onclick="toggleTheme()">🌙</button>
+  
+
+  <h1>動画編集ポートフォリオ</h1>
+
+  <p class="text-normal">
+    ずんだもんを使った解説・会話形式の動画を中心に制作しているのだ！
+    見て楽しく、内容がしっかり伝わる編集を心がけているのだ。
+  </p>
+
+  <p class="text-client">
+    キャラクターを用いた解説・会話形式動画を中心に、
+    YouTube向けの構成設計から編集まで一貫して対応しております。
+  </p>
+
+  <p>
+  <span class="text-normal">りくえー｜動画編集・サムネイル制作</span>
+  <span class="text-client">阿部 陸永｜動画編集・サムネイル制作</span>
+</p>
+
+</header>
+
+<!-- トップ動画 -->
+<section id="top-video">
+  <h2>
+    動画のポートフォリオ
+  </h2>
+
+  <div class="video highlight">
+    
+    <p class="text-normal">
+      ぼくの動画編集スキルをぎゅっとまとめた、動画のポートフォリオなのだ！  
+      テロップの見やすさやテンポのよさを大切にして、  
+     「最後まで見たくなる動画」を目指して作ったのだ。
+    </p>
+
+    </p>
+
+    <p class="text-client">
+      クライアント様に向けて、動画編集スキルや対応可能な編集表現を
+      分かりやすくまとめたポートフォリオ動画です。  
+      構成設計・台本作成・編集までを一貫して担当しています。
+    </p>
+
+    <div class="video-embed">
+
+  <!-- 非案件モード用（ローカル動画） -->
+  <video class="video-normal" controls muted playsinline>
+    <source src="videos/動画ポートフォリオ.mp4" type="video/mp4">
+    お使いのブラウザは動画再生に対応していません。
+  </video>
+
+  <!-- 案件モード用 -->
+  <video class="video-client" controls muted playsinline>
+    <source src="videos/動画ポートフォリオ2.mp4" type="video/mp4">
+    お使いのブラウザは動画再生に対応していません。
+  </video>
+
+</div>
+
+    <p class="text-client">【担当範囲】構成／台本作成／編集</p>
+  </div>
+</section>
+
+<!-- 制作実績 -->
+<section id="works">
+<h2>制作実績</h2>
+
+<div class="video" id="video1">
+  <h3>ずんだもんの歴史解説動画（約6分）</h3>
+
+  <p class="text-normal">
+    ぼく、ずんだもんが生まれた理由や歴史をわかりやすく解説した動画なのだ！  
+    はじめて見る人でも楽しめるように、情報を整理して、テンポよくまとめているのだ。
+  </p>
+
+  <p class="text-client">
+    キャラクターIPを題材とした解説動画の制作例です。  
+    情報の正確性と分かりやすさを重視し、  
+    ナレーション・テロップ・映像構成を組み立てています。
+  </p>
+
+  <div class="video-embed">
+
+  <!-- 非案件モード用 -->
+  <iframe class="video-normal"
+    src="https://www.youtube.com/embed/6czJlk_9Blk?rel=0&modestbranding=1"
+    allowfullscreen>
+  </iframe>
+
+  <!-- 案件モード用 -->
+  <iframe class="video-client"
+    src="https://www.youtube.com/embed/6czJlk_9Blk?rel=0&modestbranding=1"
+    allowfullscreen>
+  </iframe>
+
+</div>
+
+  <p class="text-client">【担当範囲】構成／台本作成／編集</p>
+</div>
+
+<div class="video" id="video2">
+  <h3>猫の歴史解説動画（ショート動画）</h3>
+
+  <p class="text-normal">
+    猫の歴史を1分でさくっと楽しめるショート動画なのだ！スマホで見やすいように、テンポのいい編集と文字の配置を意識して作っているのだ。
+　</p>
+
+  </p>
+
+  <p class="text-client">
+    ショート動画向けに情報を簡潔にまとめた編集事例です。  
+    SNSでの拡散や視聴維持を意識し、
+    冒頭の引き・テンポ感・文字の可読性を重視しています。
+  </p>
+
+<div class="video-embed" style="padding-top:177.78%;">
+  <iframe 
+    src="https://www.youtube.com/embed/SZAAXBfU1cY"
+    allowfullscreen>
+  </iframe>
+</div>
+
+  <p class="text-client">【担当範囲】構成／台本作成／編集／ショート最適化</p>
+</div>
+
+<div class="video" id="thumbnail">
+  <h3>サムネイル制作実績</h3>
+
+  <p class="text-normal">
+    動画の内容が一目で伝わるサムネイルを制作しているのだ！
+  </p>
+
+  <p class="text-client">
+    視認性・内容理解・クリック率を意識した
+    YouTubeサムネイルのデザインを行っています。
+  </p>
+
+  <div class="thumb-grid">
+    <img src="images/thumb_zundamon.png" alt="ずんだもん解説サムネ">
+    <img src="images/thumb_short.PNG" alt="猫の歴史解説・ショート用サムネ">
+  </div>
+
+  <p class="text-client">【使用ツール】Photoshop／Canva</p>
+</div>
+
+</section>
+
+<section id="contact">
+<h2>お問い合わせ</h2>
+
+<p class="text-normal">
+  動画編集やサムネイル制作の相談があったら、
+  気軽に連絡してほしいのだ！
+</p>
+
+<p class="text-client">
+  動画編集・サムネイル制作に関するご相談や
+  ご依頼は、下記フォームよりお願いいたします。
+</p>
+
+<form action="https://formspree.io/f/xxxxabcd" method="POST">
+  <input type="hidden" name="mode" id="modeField">
+
+  <label>お名前</label>
+  <input type="text" name="name" required>
+
+  <label>メールアドレス</label>
+  <input type="email" name="email" required>
+
+  <label>お問い合わせ内容</label>
+  <textarea name="message" rows="5" required></textarea>
+
+  <button class="submit">送信する</button>
+</form>
+</section>
+
+<footer style="background:#000;color:#aaa;text-align:center;padding:40px">
+  <span class="text-normal">© りくえー</span>
+  <span class="text-client">© 阿部 陸永</span>
+</footer>
+
+<!-- ずんだもん -->
+<div class="zundamon" onclick="zundaPoint()">
+  <img id="zundaImg" src="images/zundamon_open.png" alt="ずんだもん">
+  <div class="zunda-bubble" id="bubble"></div>
+</div>
+
+<script>
+const body=document.body;
+const bubble=document.getElementById("bubble");
+const themeToggle=document.getElementById("themeToggle");
+const modeField=document.getElementById("modeField");
+
+/* テーマ */
+function updateThemeIcon(){
+  themeToggle.textContent=body.classList.contains("dark")?"☀️":"🌙";
+}
+function toggleTheme(){
+  body.classList.toggle("dark");
+  localStorage.setItem("theme",body.classList.contains("dark")?"dark":"light");
+  updateThemeIcon();
+}
+if(localStorage.getItem("theme")==="dark") body.classList.add("dark");
+updateThemeIcon();
+
+const clientToggle = document.getElementById("clientToggle");
+
+/* 案件モード */
+function updateClientIcon(){
+  const isClient = body.classList.contains("client-mode");
+  clientToggle.textContent = isClient ? "🏢" : "🫛";
+}
+
+function toggleClientMode(){
+  body.classList.toggle("client-mode");
+  const isClient = body.classList.contains("client-mode");
+  localStorage.setItem("clientMode", isClient ? "on" : "off");
+  updateClientIcon();
+  updateBubble();
+}
+
+/* 初期状態復元 */
+if(localStorage.getItem("clientMode") === "on"){
+  body.classList.add("client-mode");
+}
+updateClientIcon();
+
+
+/* 吹き出し */
+function updateBubble(){
+  bubble.textContent = body.classList.contains("client-mode")
+    ? "制作実績はこちらでご確認を"
+    : "これが制作実績なのだ！";
+}
+updateBubble();
+
+/* 指差し */
+let pointIndex=0;
+const targets=["top-video","video1","video2","thumbnail"];
+function zundaPoint(){
+  const id=targets[pointIndex%targets.length];
+  const target=document.getElementById(id);
+  if(!target) return;
+  target.scrollIntoView({behavior:"smooth",block:"center"});
+  bubble.style.opacity=1;
+  setTimeout(()=>bubble.style.opacity=0,2000);
+  pointIndex++;
+}
+
+/* 瞬きアニメーション（保持） */
+const zundaImg=document.getElementById("zundaImg");
+const imgs=[
+  "images/zundamon_open.png",
+  "images/zundamon_half.png",
+  "images/zundamon_close.png"
+];
+setInterval(()=>{
+  zundaImg.src=imgs[1];
+  setTimeout(()=>zundaImg.src=imgs[2],80);
+  setTimeout(()=>zundaImg.src=imgs[0],160);
+},5000);
+
+</script>
+
+</body>
+</html>
